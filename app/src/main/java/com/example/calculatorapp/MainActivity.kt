@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
 
     fun onDigit(view: View) {
         if (requireVannish) {
-            tvInput?.text = ""
+            tvInput?.text = EMPTY_TEXT
             requireVannish = false
         }
         tvInput?.append((view as Button).text)
@@ -31,12 +31,12 @@ class MainActivity : AppCompatActivity() {
         val sign = (view as Button).text.toString()
         operation = Operation.value(sign)
         firstOperand = tvInput?.text.toString().toFloat()
-        tvInput?.text = "0"
+        tvInput?.text = ZERO
         requireVannish = true
     }
 
     fun onClr(view: View) {
-        tvInput?.text = "0"
+        tvInput?.text = ZERO
 
         operation = null
         requireVannish = true
@@ -56,7 +56,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun formatResult(calculationResult: String?): String? {
-        if (calculationResult == "Infinity") return "Error"
-        return calculationResult?.replace(".0$".toRegex(), "") ?: calculationResult
+        if (calculationResult == INFINITY) return DEVICE_ON_ZERO_ERROR
+        return calculationResult?.replace(DECIMAL_REGEX, EMPTY_TEXT) ?: calculationResult
+    }
+    companion object{
+        const val INFINITY = "Infinity"
+        const val DEVICE_ON_ZERO_ERROR = "Error"
+        val DECIMAL_REGEX = ".0$".toRegex()
+        const val ZERO = "0"
+        const val EMPTY_TEXT = ""
     }
 }
